@@ -1,6 +1,6 @@
 cabal-version:      3.0
 name:               interval-patterns
-version:            0.7.2
+version:            0.8.0
 author:             Melanie Brown
 synopsis:           Intervals, and monoids thereof
 category:           Algebra, Charts, Data Structures, Math, Statistics
@@ -10,7 +10,7 @@ license-file:       LICENSE
 homepage:           https://github.com/mixphix/interval-patterns
 bug-reports:        https://github.com/mixphix/interval-patterns/issues
 extra-source-files: CHANGELOG.md
-copyright:          2023 Melanie Brown
+copyright:          2023-2024 Melanie Brown
 description:
   Please see the README at https://github.com/mixphix/interval-patterns
 
@@ -63,6 +63,6 @@ test-suite tests
   build-depends:
     , hspec
     , interval-patterns
-    , QuickCheck
     , parsec
+    , QuickCheck
     , text
