@@ -1,12 +1,13 @@
 # Revision history for interval-patterns
 
-## Unreleased
+## 0.8.0
 
 * `newtype Shrink x = Shrink {getShrink :: Borel x}`, the monoid formed by `Borel.intersection` and `whole`
 * `landAbove :: (Ord x, Ord y) => y -> Layers x y -> Borel x` above "sea level"
 * `land :: (Ord x, Monoid y, Ord y) => Layers x y -> Borel x` above a "sea level" of `mempty`
 * remove unnecessary `Lattice` constraints on the endpoints of `Borel` sets
 * fix `Constr` definitions having an extra `-` character
+* fix bug in `difference` conflating the cases `Finishes` and `FinishedBy`
 
 ## 0.7.2
 

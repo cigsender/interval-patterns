@@ -1073,9 +1073,9 @@ difference i1 i2 = case adjacency i1 i2 of
   Overlaps i _ _ -> Just $ One i
   Starts{} -> Nothing
   During{} -> Nothing
-  Finishes{} -> Nothing
+  Finishes i _ -> Just $ One i
   Identical{} -> Nothing
-  FinishedBy i _ -> Just $ One i
+  FinishedBy{} -> Nothing
   Contains i _ k -> Just $ Two i k
   StartedBy _ j -> Just $ One j
   OverlappedBy _ _ k -> Just $ One k
