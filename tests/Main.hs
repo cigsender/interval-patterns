@@ -1,4 +1,5 @@
 {-# LANGUAGE UndecidableInstances #-}
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 
 module Main where
 
@@ -21,6 +22,7 @@ import Data.Interval qualified as Interval
 import Data.Interval.Borel (Borel)
 import Data.Interval.Borel qualified as Borel
 import Data.Interval.Layers qualified as Layers
+import Data.List qualified as List
 import Data.Semigroup
 import GHC.TypeNats
 import Test.Hspec
@@ -64,6 +66,32 @@ main = hspec do
         (Levitate x :|->: Levitate x) `shouldBe` (Levitate x :|-|: Levitate x)
         (Levitate x :<-|: Levitate x) `shouldBe` (Levitate x :|-|: Levitate x)
         (Levitate x :|-|: Levitate x) `shouldBe` (Levitate x :|-|: Levitate x)
+
+    it "intersect" do
+      property @(Ints 4 _) \a b c d -> do
+        let [x, y, z, w] = List.sort [a, b, c, d]
+        when (x /= y && y /= z && z /= w) do
+          (x :<>: z `Interval.intersect` y :<>: w) `shouldBe` Just (z :<>: y)
+          (x :<|: z `Interval.intersect` y :|>: w) `shouldBe` Just (z :||: y)
+          (x :|>: z `Interval.intersect` y :<|: w) `shouldBe` Just (z :<>: y)
+          (x :||: z `Interval.intersect` y :||: w) `shouldBe` Just (z :||: y)
+    it "union" do
+      property @(Ints 4 _) \a b c d -> do
+        let [x, y, z, w] = List.sort [a, b, c, d]
+        when (x /= y && y /= z && z /= w) do
+          (x :<>: z `Interval.union` y :<>: w) `shouldBe` Interval.One (x :<>: w)
+          (x :<|: z `Interval.union` y :|>: w) `shouldBe` Interval.One (x :<>: w)
+          (x :|>: z `Interval.union` y :<|: w) `shouldBe` Interval.One (x :||: w)
+          (x :||: z `Interval.union` y :||: w) `shouldBe` Interval.One (x :||: w)
+          when (y < z) do
+            (x :<>: y `Interval.union` z :<>: w) `shouldBe` Interval.Two (x :<>: y) (z :<>: w)
+            (x :<|: y `Interval.union` z :|>: w) `shouldBe` Interval.Two (x :<|: y) (z :|>: w)
+            (x :|>: y `Interval.union` z :<|: w) `shouldBe` Interval.Two (x :|>: y) (z :<|: w)
+            (x :||: y `Interval.union` z :||: w) `shouldBe` Interval.Two (x :||: y) (z :||: w)
+    it "unions" do
+      property @(Ints 8 _) \a b c d e f g h -> do
+        let [z, y, x, w, v, u, t, s] = List.sort [a, b, c, d, e, f, g, h]
+        Interval.unions [z :||: v, y :||: u, x :||: t, w :||: s] `shouldBe` [z :||: s]
 
   describe "Borel intervals" do
     it "(<>) is commutative" do

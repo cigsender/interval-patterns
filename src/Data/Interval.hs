@@ -927,6 +927,8 @@ setUpper x = \case
   l :|->: _ -> l :|->: x
   l :|-|: _ -> l :|-|: x
 
+infixl 4 `intersect`
+
 -- | Calculate the intersection of two intervals, if it exists.
 --
 -- @
@@ -959,6 +961,8 @@ intersect i1 i2 = case adjacency i1 i2 of
   OverlappedBy _ j _ -> Just j
   MetBy _ j _ -> Just j
   After _ _ -> Nothing
+
+infixl 4 `union`
 
 -- | Get the union of two intervals, as either 'OneOrTwo'.
 --
@@ -1044,6 +1048,8 @@ complement = \case
   l :|->: u -> Just (Two (Bottom :|->: l) (u :|-|: Top))
   l :<-|: u -> Just (Two (Bottom :|-|: l) (u :<-|: Top))
   l :<->: u -> Just (Two (Bottom :|-|: l) (u :|-|: Top))
+
+infix 4 `difference`
 
 -- | Remove all points of the second interval from the first.
 --
