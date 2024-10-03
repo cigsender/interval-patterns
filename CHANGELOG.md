@@ -1,5 +1,9 @@
 # Revision history for interval-patterns
 
+##
+
+* `unBorel :: (Ord x) => Borel x -> [Interval x]`, the ordered list of intervals in the `Borel` set
+
 ## 0.8.0
 
 * `newtype Shrink x = Shrink {getShrink :: Borel x}`, the monoid formed by `Borel.intersection` and `whole`

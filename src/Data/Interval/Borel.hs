@@ -1,6 +1,7 @@
 module Data.Interval.Borel (
-  Borel (Borel),
+  Borel,
   borel,
+  unBorel,
   intervalSet,
   Data.Interval.Borel.empty,
   singleton,
@@ -106,11 +107,15 @@ instance (Ord x) => Ring (Borel x) where
 
 -- | Consider the 'Borel' set identified by a list of 'Interval's.
 borel :: (Ord x) => [Interval x] -> Borel x
-borel = Borel . Set.fromList . I.unions
+borel = Borel . Set.fromAscList . I.unions
 
 -- | Turn a 'Borel' set into a 'Set.Set' of 'Interval's.
 intervalSet :: (Ord x) => Borel x -> Set (Interval x)
 intervalSet (Borel is) = unionsSet is
+
+-- | Get the ordered list of 'Interval's from a 'Borel' set.
+unBorel :: (Ord x) => Borel x -> [Interval x]
+unBorel = Set.toAscList . intervalSet
 
 unionsSet :: (Ord x) => Set (Interval x) -> Set (Interval x)
 unionsSet = Set.fromAscList . I.unionsAsc . Set.toAscList
